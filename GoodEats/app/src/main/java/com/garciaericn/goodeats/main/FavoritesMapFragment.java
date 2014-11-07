@@ -1,7 +1,9 @@
 package com.garciaericn.goodeats.main;
 
+import android.location.Location;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,6 +22,11 @@ public class FavoritesMapFragment extends MapFragment
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private GoogleMap mGoogleMap;
+    private Location location;
+
+    public FavoritesMapFragment() {
+
+    }
 
     public static FavoritesMapFragment newInstance(int sectionNumber) {
         FavoritesMapFragment fragment = new FavoritesMapFragment();
@@ -44,9 +51,21 @@ public class FavoritesMapFragment extends MapFragment
             mGoogleMap.setOnInfoWindowClickListener(this);
             mGoogleMap.setOnMapClickListener(this);
             mGoogleMap.setOnMapLongClickListener(this);
+
+            location = mGoogleMap.getMyLocation();
+            if (location != null) {
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+            }
         }
 
     }
+
+
+
+    /**
+     * Click listeners
+     * */
 
     @Override
     public void onInfoWindowClick(Marker marker) {
