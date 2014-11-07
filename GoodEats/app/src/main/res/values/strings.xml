@@ -6,5 +6,9 @@
     <string name="title_section2">Map</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    
+    <!-- API codes-->
+    <string name="foursquare_client_id">NN3R1V51RSST2NI1QUHRWMAOIXRZLXXWWM0BNBDVK3YNE02A</string>
+    <string name="foursquare_client_secret">ED4QSIAAC4WPWO4EKRF3IIFMTAY3KU3HNU1MGWEUQJFM5KMV</string>
+    <string name="google_api_key">AIzaSyDnT7xc8sTv_f-2dSjoNF83an8cxOB5xb4</string>
 </resources>
