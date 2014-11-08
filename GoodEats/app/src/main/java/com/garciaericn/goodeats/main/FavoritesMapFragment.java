@@ -1,7 +1,15 @@
 package com.garciaericn.goodeats.main;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,11 +26,14 @@ public class FavoritesMapFragment extends MapFragment
         implements
         GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnMapClickListener,
-        GoogleMap.OnMapLongClickListener{
+        GoogleMap.OnMapLongClickListener,
+        LocationListener{
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final int REQUEST_ENABLE_GPS = 0x52446;
     private GoogleMap mGoogleMap;
-    private Location location;
+    private LocationManager mLocationManager;
+    private Location mLocation;
 
     public FavoritesMapFragment() {
 
@@ -52,16 +63,57 @@ public class FavoritesMapFragment extends MapFragment
             mGoogleMap.setOnMapClickListener(this);
             mGoogleMap.setOnMapLongClickListener(this);
 
-            location = mGoogleMap.getMyLocation();
-            if (location != null) {
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            enableGps();
+
+//            location = mGoogleMap.getMyLocation();
+            if (mLocation != null) {
+                LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             }
         }
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        enableGps();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mLocationManager.removeUpdates(this);
+    }
+
+    private void enableGps() {
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
+
+            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                mLocation = location;
+                Toast.makeText(getActivity(), location.toString(), Toast.LENGTH_SHORT);
+            }
+        } else {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("GPS is unavailable")
+                    .setMessage("Please enable GPS")
+                    .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(settingsIntent, REQUEST_ENABLE_GPS);
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        enableGps();
+    }
 
     /**
      * Click listeners
@@ -80,5 +132,29 @@ public class FavoritesMapFragment extends MapFragment
     @Override
     public void onMapLongClick(LatLng latLng) {
         // TODO: Add new custom pin at LatLng
+    }
+
+    /**
+     * Location Listener
+     * */
+
+     @Override
+    public void onLocationChanged(Location location) {
+        mLocation = location;
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
