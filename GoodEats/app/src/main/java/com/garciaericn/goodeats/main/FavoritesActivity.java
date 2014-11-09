@@ -7,6 +7,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -18,10 +19,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
+import com.garciaericn.goodeats.search.SearchActivity;
 
 
 public class FavoritesActivity extends Activity implements ActionBar.TabListener {
 
+    private static final int ADD_REQUEST = 112342;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -94,6 +97,8 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
             case R.id.action_add:
                 Toast.makeText(this, "Add new restaurant", Toast.LENGTH_SHORT).show();
                 // TODO: Create intent to go to add new restaurant
+                Intent addIntent = new Intent(this, SearchActivity.class);
+                startActivityForResult(addIntent, ADD_REQUEST);
                 return true;
         }
         return super.onOptionsItemSelected(item);
