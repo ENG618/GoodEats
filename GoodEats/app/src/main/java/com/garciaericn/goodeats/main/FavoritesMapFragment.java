@@ -76,6 +76,12 @@ public class FavoritesMapFragment extends MapFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Toast.makeText(getActivity(), "onStart", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         enableGps();
@@ -138,7 +144,7 @@ public class FavoritesMapFragment extends MapFragment
      * Location Listener
      * */
 
-     @Override
+    @Override
     public void onLocationChanged(Location location) {
         mLocation = location;
     }

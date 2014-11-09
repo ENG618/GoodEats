@@ -8,4 +8,12 @@ import com.google.android.gms.maps.MapFragment;
  * Created by ENG618-Mac on 11/7/14.
  */
 public class SearchMapFragment extends MapFragment {
+
+    public SearchMapFragment() {
+
+    }
+
+    public static SearchMapFragment getInstance() {
+        return new SearchMapFragment();
+    }
 }
