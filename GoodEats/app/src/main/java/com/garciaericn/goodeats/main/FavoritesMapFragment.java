@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +32,7 @@ public class FavoritesMapFragment extends MapFragment
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final int REQUEST_ENABLE_GPS = 0x52446;
+    private static final String LOG_TAG = "com.garciaericn.goodeats.main.FavoritesMapFragment";
     private GoogleMap mGoogleMap;
     private LocationManager mLocationManager;
     private Location mLocation;
@@ -50,6 +52,7 @@ public class FavoritesMapFragment extends MapFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.i(LOG_TAG, "onActivityCreated");
 
         // TODO: Get arguments once updated
 
@@ -78,22 +81,26 @@ public class FavoritesMapFragment extends MapFragment
     @Override
     public void onStart() {
         super.onStart();
+        Log.i(LOG_TAG, "onStart");
         Toast.makeText(getActivity(), "onStart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(LOG_TAG, "onResume");
         enableGps();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.i(LOG_TAG, "onPause");
         mLocationManager.removeUpdates(this);
     }
 
     private void enableGps() {
+        Log.i(LOG_TAG, "enableGps");
         if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
 
