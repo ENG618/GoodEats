@@ -13,4 +13,5 @@
     <string name="google_api_key">AIzaSyDnT7xc8sTv_f-2dSjoNF83an8cxOB5xb4</string>
     <string name="action_add">Add</string>
     <string name="login">Login</string>
+    <string name="login_with_googleplus">Login with Google+</string>
 </resources>
