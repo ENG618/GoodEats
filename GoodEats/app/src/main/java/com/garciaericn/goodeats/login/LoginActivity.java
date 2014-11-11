@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 
-import com.garciaericn.goodeats.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
@@ -60,21 +59,22 @@ public class LoginActivity extends Activity implements GoogleApiClient.Connectio
     }
 
     /*
-            * Connection Callbacks
-            * */
+    * Connection Callbacks
+    * */
     @Override
     public void onConnected(Bundle bundle) {
-
+        // Connection errors resolved
+        // Can now access Google APIs on behalf of the user
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        mGoogleApiClient.connect();
     }
 
     /*
-    * On Connections Failed Listener
-    * */
+     *On Connections Failed Listener
+     * */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if (!mIntentInProgress && connectionResult.hasResolution()) {

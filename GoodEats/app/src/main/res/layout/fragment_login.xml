@@ -3,12 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <Button
-        android:layout_width="wrap_content"
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login_with_googleplus"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:padding="2dp"
         android:id="@+id/gplus_login"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
