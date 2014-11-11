@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 
+import com.garciaericn.goodeats.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
@@ -30,11 +31,12 @@ public class LoginActivity extends Activity implements GoogleApiClient.Connectio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
-//        getFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.login_container, LoginFragment.getInstance(), LoginFragment.TAG)
-//                .commit();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.login_container, LoginFragment.getInstance(), LoginFragment.TAG)
+                .commit();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -42,6 +44,7 @@ public class LoginActivity extends Activity implements GoogleApiClient.Connectio
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
+
     }
 
     @Override
