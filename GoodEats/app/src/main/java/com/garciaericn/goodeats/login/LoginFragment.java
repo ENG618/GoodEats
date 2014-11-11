@@ -1,5 +1,6 @@
 package com.garciaericn.goodeats.login;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
+import com.garciaericn.goodeats.main.FavoritesActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,6 +34,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
      * us from starting further intents.
      */
     private boolean mIntentInProgress;
+    /* Store the connection result from onConnectionFailed callbacks so that we can
+     * resolve them when the user clicks sign-in.
+     */
+    private ConnectionResult mConnectionResult;
+    private boolean mSignInClicked;
 
     public LoginFragment() {
 
@@ -85,6 +92,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
             case R.id.g_plus_login:
                 Toast.makeText(getActivity(), "Sign in now", Toast.LENGTH_SHORT).show();
                 // TODO: Start login process here
+                if (!mGoogleApiClient.isConnected()) {
+                    mSignInClicked = true;
+                    resolveSignInError();
+                }
                 break;
             default:
                 // If default action is needed.
@@ -94,8 +105,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
     @Override
     public void onConnected(Bundle bundle) {
-        // Connection errors resolved
-        // Can now access Google APIs on behalf of the user
+        mSignInClicked = false;
+        // User is connected
+        // Launch main activity
+        Intent intent = new Intent(getActivity(), FavoritesActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -105,13 +119,26 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (!mIntentInProgress && connectionResult.hasResolution()) {
+        if (!mIntentInProgress) {
+            // Store the ConnectionResult so that we can use it later when the user clicks
+            // 'sign-in'.
+            mConnectionResult = connectionResult;
+
+            if (mSignInClicked) {
+                resolveSignInError();
+            }
+
+        }
+    }
+
+    public void resolveSignInError() {
+        if (mConnectionResult.hasResolution()) {
             try {
                 mIntentInProgress = true;
-                getActivity().startIntentSenderForResult(connectionResult.getResolution().getIntentSender(), RC_SIGN_IN, null, 0, 0, 0);
-
-
+                getActivity().startIntentSenderForResult(mConnectionResult.getResolution().getIntentSender(), RC_SIGN_IN, null, 0, 0, 0);
             } catch (IntentSender.SendIntentException e) {
+                // The intent was canceled before it was sent.  Return to the default
+                // state and attempt to connect to get an updated ConnectionResult.
                 mIntentInProgress = false;
                 mGoogleApiClient.connect();
             }
@@ -121,6 +148,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_SIGN_IN) {
+            if (resultCode != Activity.RESULT_OK) {
+                mSignInClicked = false;
+            }
+
             mIntentInProgress = false;
 
             if (!mGoogleApiClient.isConnected()) {
