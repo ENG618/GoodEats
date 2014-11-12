@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
+import com.garciaericn.goodeats.data.DataManager;
 import com.garciaericn.goodeats.search.SearchActivity;
 
 
@@ -75,6 +76,14 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+//        DataManager mgr = DataManager.getInstance(this);
+//        if (mgr != null) {
+//            if (!mgr.checkFile(this)) {
+//                loadDefaultData();
+//                mgr.writeToDisk();
+//            }
+//        }
     }
 
 

@@ -15,4 +15,5 @@
     <string name="login">Login</string>
     <string name="login_with_googleplus">Login with Google+</string>
     <string name="sign_out">Sign out</string>
+    <string name="list_item_name">Name</string>
 </resources>
