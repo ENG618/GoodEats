@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.data.DataManager;
 import com.garciaericn.goodeats.data.Restaurant;
+import com.garciaericn.goodeats.data.RestaurantListAdapter;
 import com.garciaericn.goodeats.settings.SettingsFragment;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class FavoritesListFragment extends ListFragment {
 
     private DataManager mgr;
     private SharedPreferences settings;
+    private RestaurantListAdapter adapter;
 
     public FavoritesListFragment() {
 
@@ -50,6 +53,16 @@ public class FavoritesListFragment extends ListFragment {
         }
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (resaurants != null) {
+            adapter = new RestaurantListAdapter(getActivity(), R.layout.restaurante_list_item, resaurants);
+            setListAdapter(adapter);
+        }
+    }
+
     private void loadDefaultData() {
         if (resaurants == null) {
             resaurants = new ArrayList<Restaurant>();
@@ -60,5 +73,10 @@ public class FavoritesListFragment extends ListFragment {
         resaurants.add(new Restaurant("Flemings"));
         resaurants.add(new Restaurant("Cate TuTu Tango"));
         resaurants.add(new Restaurant("Longhorn"));
+
+        // Update settings
+        settings.edit()
+                .putBoolean(SettingsFragment.FIRST_LAUNCH, false)
+                .apply();
     }
 }
