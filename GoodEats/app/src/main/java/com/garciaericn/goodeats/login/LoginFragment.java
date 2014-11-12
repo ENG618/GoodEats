@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.main.FavoritesActivity;
@@ -90,8 +89,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.g_plus_login:
-                Toast.makeText(getActivity(), "Sign in now", Toast.LENGTH_SHORT).show();
-                // TODO: Start login process here
                 if (!mGoogleApiClient.isConnected()) {
                     mSignInClicked = true;
                     resolveSignInError();
@@ -109,6 +106,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
         // User is connected
         // Launch main activity
         Intent intent = new Intent(getActivity(), FavoritesActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

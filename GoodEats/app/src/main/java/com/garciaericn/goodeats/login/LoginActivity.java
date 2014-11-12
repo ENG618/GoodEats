@@ -17,6 +17,11 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+//        getFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.login_container, SplashScreenFragment.getInstance(), SplashScreenFragment.TAG)
+//                .commit();
+
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.login_container, LoginFragment.getInstance(), LoginFragment.TAG)

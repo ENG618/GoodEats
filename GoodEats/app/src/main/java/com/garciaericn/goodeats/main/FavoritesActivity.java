@@ -11,11 +11,8 @@ import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
@@ -100,6 +97,8 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
                 Intent addIntent = new Intent(this, SearchActivity.class);
                 startActivityForResult(addIntent, ADD_REQUEST);
                 return true;
+            case R.id.action_sign_out:
+                Toast.makeText(this, "Sign out", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
