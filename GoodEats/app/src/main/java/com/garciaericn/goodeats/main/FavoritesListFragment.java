@@ -2,7 +2,15 @@ package com.garciaericn.goodeats.main;
 
 
 import android.app.ListFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+
+import com.garciaericn.goodeats.data.DataManager;
+import com.garciaericn.goodeats.data.Restaurant;
+import com.garciaericn.goodeats.settings.SettingsFragment;
+
+import java.util.ArrayList;
 
 /**
  * Full Sail University
@@ -11,11 +19,46 @@ import android.os.Bundle;
  */
 public class FavoritesListFragment extends ListFragment {
 
+    private ArrayList<Restaurant> resaurants;
+
+    private DataManager mgr;
+    private SharedPreferences settings;
+
     public FavoritesListFragment() {
 
     }
 
     public static FavoritesListFragment getInstance() {
         return new FavoritesListFragment();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Un-bundle arguments from fragment using getArguments()
+
+        mgr = DataManager.getInstance(getActivity());
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        if (settings.getBoolean(SettingsFragment.FIRST_LAUNCH, true) && mgr != null) {
+            loadDefaultData();
+            mgr.writeToDisk(resaurants);
+        } else {
+            if (mgr.checkFile(getActivity())) {
+                resaurants = mgr.readFromDisk();
+            }
+        }
+    }
+
+    private void loadDefaultData() {
+        if (resaurants == null) {
+            resaurants = new ArrayList<Restaurant>();
+        }
+
+        resaurants.add(new Restaurant("Outback Steakhouse"));
+        resaurants.add(new Restaurant("Olive Garden"));
+        resaurants.add(new Restaurant("Flemings"));
+        resaurants.add(new Restaurant("Cate TuTu Tango"));
+        resaurants.add(new Restaurant("Longhorn"));
     }
 }

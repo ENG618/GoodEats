@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Reset Application">
+
+        <Preference
+            android:key="FIRST_LAUNCH"
+            android:title="First launch"
+            android:summary="Checks if app has been launched before."
+            android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
