@@ -11,10 +11,14 @@ import android.view.ViewGroup;
 
 import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.main.FavoritesActivity;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+
+import java.io.IOException;
 
 /**
  * Full Sail University
@@ -104,6 +108,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
         // User is connected
+
+
+        String accountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
+        String accountID = null;
+        try {
+            accountID = GoogleAuthUtil.getAccountId(getActivity().getApplicationContext(),accountName);
+        } catch (GoogleAuthException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (accountID != null) {
+            // TODO: createLocalAccount() = Store account name and id with DB of restaurants
+        }
+
+
         // Launch main activity
         Intent intent = new Intent(getActivity(), FavoritesActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
