@@ -103,8 +103,6 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
                 startActivity(settingsIntent);
                 return true;
             case R.id.action_add:
-                Toast.makeText(this, "Add new restaurant", Toast.LENGTH_SHORT).show();
-                // TODO: Create intent to go to add new restaurant
                 Intent addIntent = new Intent(this, SearchActivity.class);
                 startActivityForResult(addIntent, ADD_REQUEST);
                 return true;
