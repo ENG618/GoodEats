@@ -9,17 +9,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.main.FavoritesActivity;
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
-import java.io.IOException;
 
 /**
  * Full Sail University
@@ -128,18 +126,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
 
         String accountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
-        String accountID = null;
-        try {
-            accountID = GoogleAuthUtil.getAccountId(getActivity().getApplicationContext(),accountName);
-        } catch (GoogleAuthException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Toast.makeText(getActivity(), accountName, Toast.LENGTH_SHORT).show();
+//        String accountID = GoogleAuthUtil.getAccountId(getActivity(), accountName);
+//        try {
+//            accountID = GoogleAuthUtil.getAccountId(getActivity().getApplicationContext(),accountName);
+//        } catch (GoogleAuthException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        if (accountID != null) {
-            // TODO: createLocalAccount() = Store account name and id with DB of restaurants
-        }
+//        if (accountID != null) {
+//            // TODO: createLocalAccount() = Store account name and id with DB of restaurants
+//        }
 
 
         // Launch main activity

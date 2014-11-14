@@ -11,4 +11,11 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="Danger Zone">
+        <Preference
+            android:key="REVOKE_TOKEN"
+            android:title="Delete Account"
+            android:summary="This will delete your account, and all associated data.  This is irreversible!" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
