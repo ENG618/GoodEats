@@ -1,11 +1,14 @@
 package com.garciaericn.goodeats.data;
 
+import java.io.Serializable;
+
 /**
  * Full Sail University
  * Mobile Development BS
  * Created by ENG618-Mac on 11/2/14.
  */
-public class Restaurant {
+public class Restaurant implements Serializable {
+    public static final long serialVersionUID = 2357817694738294783L;
 
     // Object fields
     private String name;

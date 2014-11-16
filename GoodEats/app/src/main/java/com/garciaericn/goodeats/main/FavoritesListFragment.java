@@ -5,6 +5,7 @@ import android.app.ListFragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.data.DataManager;
@@ -22,7 +23,8 @@ import java.util.ArrayList;
  */
 public class FavoritesListFragment extends ListFragment {
 
-    private ArrayList<Restaurant> resaurants;
+    private static final String TAG = "com.garciaericn.goodeats.main.FavoritesListFragment.TAG";
+    private static ArrayList<Restaurant> restaurants;
 
     private DataManager mgr;
     private SharedPreferences settings;
@@ -48,10 +50,11 @@ public class FavoritesListFragment extends ListFragment {
 
         if (settings.getBoolean(SettingsFragment.FIRST_LAUNCH, true) && mgr != null) {
             loadDefaultData();
-            mgr.writeToDisk(resaurants);
+            mgr.writeToDisk(restaurants);
         } else {
             if (mgr.checkFile(getActivity())) {
-                resaurants = mgr.readFromDisk();
+                restaurants = mgr.readFromDisk();
+                Log.i(TAG, restaurants.toString());
             }
         }
 
@@ -75,22 +78,22 @@ public class FavoritesListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (resaurants != null) {
-            adapter = new RestaurantListAdapter(getActivity(), R.layout.restaurante_list_item, resaurants);
+        if (restaurants != null) {
+            adapter = new RestaurantListAdapter(getActivity(), R.layout.restaurante_list_item, restaurants);
             setListAdapter(adapter);
         }
     }
 
     private void loadDefaultData() {
-        if (resaurants == null) {
-            resaurants = new ArrayList<Restaurant>();
+        if (restaurants == null) {
+            restaurants = new ArrayList<Restaurant>();
         }
 
-        resaurants.add(new Restaurant("Outback Steakhouse"));
-        resaurants.add(new Restaurant("Olive Garden"));
-        resaurants.add(new Restaurant("Flemings"));
-        resaurants.add(new Restaurant("Cate TuTu Tango"));
-        resaurants.add(new Restaurant("Longhorn"));
+        restaurants.add(new Restaurant("Outback Steakhouse"));
+        restaurants.add(new Restaurant("Olive Garden"));
+        restaurants.add(new Restaurant("Flemings"));
+        restaurants.add(new Restaurant("Cate TuTu Tango"));
+        restaurants.add(new Restaurant("Longhorn"));
 
         // Update settings
         settings.edit()

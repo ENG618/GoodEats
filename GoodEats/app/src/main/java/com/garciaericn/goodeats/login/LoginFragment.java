@@ -91,9 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     @Override
     public void onStart() {
         super.onStart();
-        if (!mSignedIn) {
             mGoogleApiClient.connect();
-        }
     }
 
     @Override

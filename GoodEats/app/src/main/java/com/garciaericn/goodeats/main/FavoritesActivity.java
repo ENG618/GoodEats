@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
-import com.garciaericn.goodeats.login.LoginActivity;
 import com.garciaericn.goodeats.login.LoginFragment;
 import com.garciaericn.goodeats.search.SearchActivity;
 import com.garciaericn.goodeats.settings.SettingsActivity;
