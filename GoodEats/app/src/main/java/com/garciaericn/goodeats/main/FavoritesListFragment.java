@@ -10,6 +10,7 @@ import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.data.DataManager;
 import com.garciaericn.goodeats.data.Restaurant;
 import com.garciaericn.goodeats.data.RestaurantListAdapter;
+import com.garciaericn.goodeats.data.db.RestaurantsDataSource;
 import com.garciaericn.goodeats.settings.SettingsFragment;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class FavoritesListFragment extends ListFragment {
     private DataManager mgr;
     private SharedPreferences settings;
     private RestaurantListAdapter adapter;
+
+    RestaurantsDataSource dataSource;
 
     public FavoritesListFragment() {
 
@@ -51,6 +54,21 @@ public class FavoritesListFragment extends ListFragment {
                 resaurants = mgr.readFromDisk();
             }
         }
+
+        // TODO: set up database
+        //dataSource = new RestaurantsDataSource(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //dataSource.close();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //dataSource.open();
     }
 
     @Override

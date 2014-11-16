@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
+import com.garciaericn.goodeats.login.LoginActivity;
+import com.garciaericn.goodeats.login.LoginFragment;
 import com.garciaericn.goodeats.search.SearchActivity;
 import com.garciaericn.goodeats.settings.SettingsActivity;
 
@@ -108,6 +110,11 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
                 return true;
             case R.id.action_sign_out:
                 Toast.makeText(this, "Sign out", Toast.LENGTH_SHORT).show();
+
+                Intent signOutIntent = new Intent();
+                setResult(LoginFragment.RC_SIGN_OUT, signOutIntent);
+                finish();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);

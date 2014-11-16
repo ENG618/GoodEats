@@ -30,6 +30,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
+    private static final int RC_LOGGED_IN = 1034553;
+    public static final int RC_SIGN_OUT = 34458392;
     /* Client used to interact with Google APIs. */
     private GoogleApiClient mGoogleApiClient;
     /* A flag indicating that a PendingIntent is in progress and prevents
@@ -41,6 +43,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
      */
     private ConnectionResult mConnectionResult;
     private boolean mSignInClicked;
+    private boolean mSignedIn;
 
     public LoginFragment() {
 
@@ -48,6 +51,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
     public static LoginFragment getInstance() {
         return new LoginFragment();
+    }
+
+    private void signOut() {
+        if (mGoogleApiClient.isConnected()){
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
+            mIntentInProgress = false;
+            mSignInClicked = false;
+        }
     }
 
     @Override
@@ -78,7 +91,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     @Override
     public void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        if (!mSignedIn) {
+            mGoogleApiClient.connect();
+        }
     }
 
     @Override
@@ -122,6 +137,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     @Override
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
+        mSignedIn = true;
         // User is connected
 
 
@@ -192,6 +208,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
             if (!mGoogleApiClient.isConnected()) {
                 mGoogleApiClient.connect();
             }
+        } else if (requestCode == RC_LOGGED_IN) {
+            if (resultCode == RC_SIGN_OUT) {
+                signOut();
+            }
         }
+
     }
 }

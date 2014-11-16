@@ -82,7 +82,6 @@ public class FavoritesMapFragment extends MapFragment
     public void onStart() {
         super.onStart();
         Log.i(LOG_TAG, "onStart");
-        Toast.makeText(getActivity(), "onStart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
