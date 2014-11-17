@@ -10,6 +10,8 @@ import java.io.Serializable;
 public class Restaurant implements Serializable {
     public static final long serialVersionUID = 2357817694738294783L;
 
+    public static final String RESTAURANT = "RESTAURANT";
+
     // Object fields
     private String name;
 

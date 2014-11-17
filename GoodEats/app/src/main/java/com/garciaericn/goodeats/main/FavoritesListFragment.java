@@ -2,10 +2,13 @@ package com.garciaericn.goodeats.main;
 
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 
 import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.data.DataManager;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 public class FavoritesListFragment extends ListFragment {
 
     private static final String TAG = "com.garciaericn.goodeats.main.FavoritesListFragment.TAG";
+    private static final int DETAIL_VIEW = 33452246;
     private static ArrayList<Restaurant> restaurants;
 
     private DataManager mgr;
@@ -82,6 +86,15 @@ public class FavoritesListFragment extends ListFragment {
             adapter = new RestaurantListAdapter(getActivity(), R.layout.restaurante_list_item, restaurants);
             setListAdapter(adapter);
         }
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Restaurant selectedRestaurant = restaurants.get(position);
+
+        Intent detailsIntent = new Intent(getActivity(), );
+        detailsIntent.putExtra(Restaurant.RESTAURANT, selectedRestaurant);
+        startActivityForResult(detailsIntent, DETAIL_VIEW);
     }
 
     private void loadDefaultData() {
