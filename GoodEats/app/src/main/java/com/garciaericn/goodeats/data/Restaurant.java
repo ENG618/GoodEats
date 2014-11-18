@@ -11,6 +11,8 @@ public class Restaurant implements Serializable {
     public static final long serialVersionUID = 2357817694738294783L;
 
     public static final String RESTAURANT = "RESTAURANT";
+    public static final int SAVE_CODE = 12345;
+    public static final int DISCARD_CODE = 15645;
 
     // Object fields
     private String name;

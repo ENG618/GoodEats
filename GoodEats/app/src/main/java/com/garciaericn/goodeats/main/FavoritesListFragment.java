@@ -15,6 +15,7 @@ import com.garciaericn.goodeats.data.DataManager;
 import com.garciaericn.goodeats.data.Restaurant;
 import com.garciaericn.goodeats.data.RestaurantListAdapter;
 import com.garciaericn.goodeats.data.db.RestaurantsDataSource;
+import com.garciaericn.goodeats.details.DetailsActivity;
 import com.garciaericn.goodeats.settings.SettingsFragment;
 
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class FavoritesListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Restaurant selectedRestaurant = restaurants.get(position);
 
-        Intent detailsIntent = new Intent(getActivity(), );
+        Intent detailsIntent = new Intent(getActivity(), DetailsActivity.class);
         detailsIntent.putExtra(Restaurant.RESTAURANT, selectedRestaurant);
         startActivityForResult(detailsIntent, DETAIL_VIEW);
     }

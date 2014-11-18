@@ -34,6 +34,8 @@
         <!--Search Activity-->
         <activity android:name=".search.SearchActivity"
             android:parentActivityName=".main.FavoritesActivity"/>
+        <!--Detail Activity-->
+        <activity android:name=".details.DetailsActivity" />
         <!--Settings Activity-->
         <activity android:name=".settings.SettingsActivity"
             android:label="Settings"/>
