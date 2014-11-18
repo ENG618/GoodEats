@@ -21,7 +21,7 @@ public class DetailsActivity extends Activity {
 
         if (savedInstanceState == null) {
             DetailsFragment detailsFragment = new DetailsFragment();
-            Bundle b = getIntent().getBundleExtra(Restaurant.RESTAURANT);
+            Bundle b = getIntent().getExtras();
 
             if (b != null && b.containsKey(Restaurant.RESTAURANT)) {
                 detailsFragment.setArguments(b);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.data.Restaurant;
@@ -37,17 +38,13 @@ public class DetailsFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (getArguments() != null && getArguments().containsKey(Restaurant.RESTAURANT)) {
-            restaurant = (Restaurant) getArguments().getSerializable(Restaurant.RESTAURANT);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
+
+        if (restaurant != null) {
+            TextView titleTV = (TextView) view.findViewById(R.id.restaurant_name);
+            titleTV.setText(restaurant.getName());
+        }
 
         return view;
     }
