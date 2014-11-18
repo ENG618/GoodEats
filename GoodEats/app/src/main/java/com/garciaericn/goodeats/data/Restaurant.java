@@ -12,7 +12,6 @@ public class Restaurant implements Serializable {
 
     public static final String RESTAURANT = "RESTAURANT";
     public static final int SAVE_CODE = 12345;
-    public static final int DISCARD_CODE = 15645;
 
     // Object fields
     private String name;

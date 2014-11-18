@@ -1,11 +1,15 @@
 package com.garciaericn.goodeats.details;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.data.Restaurant;
@@ -19,7 +23,8 @@ public class DetailsFragment extends Fragment {
 
     public static final String TAG = "com.garciaericn.goodeats.details.DetailsFragment.TAG";
 
-    Restaurant restaurant;
+    private Restaurant restaurant;
+    private OnFragmentInteractionListener mListener;
 
     public DetailsFragment() {
 
@@ -35,6 +40,7 @@ public class DetailsFragment extends Fragment {
         if (b != null && b.containsKey(Restaurant.RESTAURANT)) {
             restaurant = (Restaurant) b.getSerializable(Restaurant.RESTAURANT);
         }
+        mListener.setHomeAsUp();
     }
 
     @Override
@@ -48,4 +54,39 @@ public class DetailsFragment extends Fragment {
 
         return view;
     }
-}
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().setResult(Activity.RESULT_CANCELED);
+                getActivity().finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * DetailsFragment Interface
+     */
+    public interface OnFragmentInteractionListener {
+        public void setHomeAsUp();
+    }
+ }

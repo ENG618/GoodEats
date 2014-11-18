@@ -1,7 +1,6 @@
 package com.garciaericn.goodeats.details;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
 
 import com.garciaericn.goodeats.R;
@@ -12,7 +11,7 @@ import com.garciaericn.goodeats.data.Restaurant;
  * Mobile Development BS
  * Created by ENG618-Mac on 11/16/14.
  */
-public class DetailsActivity extends Activity {
+public class DetailsActivity extends Activity implements DetailsFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,5 +31,10 @@ public class DetailsActivity extends Activity {
                     .replace(R.id.details_container, detailsFragment, DetailsFragment.TAG)
                     .commit();
         }
+    }
+
+    @Override
+    public void setHomeAsUp() {
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

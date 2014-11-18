@@ -1,6 +1,7 @@
 package com.garciaericn.goodeats.main;
 
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
 import com.garciaericn.goodeats.data.DataManager;
@@ -96,6 +98,14 @@ public class FavoritesListFragment extends ListFragment {
         Intent detailsIntent = new Intent(getActivity(), DetailsActivity.class);
         detailsIntent.putExtra(Restaurant.RESTAURANT, selectedRestaurant);
         startActivityForResult(detailsIntent, DETAIL_VIEW);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DETAIL_VIEW && resultCode == Activity.RESULT_CANCELED) {
+            Toast.makeText(getActivity(), "New Restaurant Cancelled", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadDefaultData() {
