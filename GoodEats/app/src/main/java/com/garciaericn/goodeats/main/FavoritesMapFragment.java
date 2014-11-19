@@ -65,6 +65,7 @@ public class FavoritesMapFragment extends MapFragment
             mGoogleMap.setOnInfoWindowClickListener(this);
             mGoogleMap.setOnMapClickListener(this);
             mGoogleMap.setOnMapLongClickListener(this);
+            mGoogleMap.setMyLocationEnabled(true);
 
             mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             enableGps();
@@ -119,7 +120,8 @@ public class FavoritesMapFragment extends MapFragment
                             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                             startActivityForResult(settingsIntent, REQUEST_ENABLE_GPS);
                         }
-                    });
+                    })
+                    .show();
         }
     }
 
