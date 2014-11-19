@@ -72,6 +72,7 @@ public class FavoritesMapFragment extends MapFragment
 //            location = mGoogleMap.getMyLocation();
             if (mLocation != null) {
                 LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+                mGoogleMap.setMyLocationEnabled(true);
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             }
         }
