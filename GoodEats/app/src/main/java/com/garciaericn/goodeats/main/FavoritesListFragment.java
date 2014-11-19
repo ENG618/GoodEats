@@ -104,7 +104,7 @@ public class FavoritesListFragment extends ListFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == DETAIL_VIEW && resultCode == Activity.RESULT_CANCELED) {
-            Toast.makeText(getActivity(), "New Restaurant Cancelled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Details closed", Toast.LENGTH_SHORT).show();
         }
     }
 
