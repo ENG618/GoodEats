@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -14,6 +15,11 @@ import android.util.Log;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Full Sail University
@@ -27,6 +33,7 @@ public class SearchMapFragment extends MapFragment implements LocationListener{
     private GoogleMap mGoogleMap;
     private LocationManager mLocationManager;
     private LatLng mCurrentLocation;
+    private String placesSearchURL;
 
     public SearchMapFragment() {
 
@@ -122,4 +129,69 @@ public class SearchMapFragment extends MapFragment implements LocationListener{
     public void onProviderDisabled(String provider) {
 
     }
+
+
+
+
+    // Fetch URL
+    private static String getResponse(URL url) {
+        // Log message
+        Log.i(TAG, "getResponse entered");
+
+        String response;
+        try {
+            //noinspection UnusedAssignment
+            response = null;
+            URLConnection conn = url.openConnection();
+            BufferedInputStream bin = new BufferedInputStream(conn.getInputStream());
+            byte[] contextByte = new byte[1024];
+            //noinspection UnusedAssignment
+            int byteRead = 0;
+            //StringBuffer was producing an error so I switched it to String Builder
+            StringBuilder responseBuilder = new StringBuilder();
+
+
+            while ((byteRead = bin.read(contextByte)) != -1) {
+                response = new String(contextByte, 0, byteRead);
+                responseBuilder.append(response);
+            }
+            response = responseBuilder.toString();
+            Log.i(TAG, "URL Response: " + response);
+        } catch (IOException e) {
+            response = "Something isn't right.  We didn't receive a response";
+            Log.e(TAG, "Something went wrong", e);
+        }
+
+        return response;
+    }
+
+    // Obtain data from api
+    private class getData extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            // Declare local variable response string
+            String responseString;
+
+            try { // Try URL
+                URL url = new URL(placesSearchURL);
+                responseString = getResponse(url);
+            } catch (Exception e) { // If error show response string and error
+                responseString = "Something isn't right";
+                Log.e(TAG, "ERROR: ", e);
+            }
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.i(TAG, "onPostExecute entered");
+            Log.i(TAG, "Post Execute String: " + s);
+
+            // TODO: Parse and send to fragments
+
+            super.onPostExecute(s);
+        }
+    }
+
 }
