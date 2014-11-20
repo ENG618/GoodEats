@@ -14,23 +14,53 @@ public class Restaurant implements Serializable {
     public static final int SAVE_CODE = 12345;
 
     // Object fields
+    private String placeID;
     private String name;
+    private String iconURL;
+    private boolean openNow;
 
     public Restaurant(){
 
     }
 
-    public Restaurant(String name) {
+    public Restaurant(String id, String name, String iconURL, boolean openNow) {
+        setPlaceID(id);
         setName(name);
     }
 
     /**
-     * Getter and Setter Methods*/
+     * Getter and Setter Methods
+     * */
+
+    public String getPlaceID() {
+        return placeID;
+    }
+
+    public void setPlaceID(String placeID) {
+        this.placeID = placeID;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getIconURL() {
+        return iconURL;
+    }
+
+    public void setIconURL(String iconURL) {
+        this.iconURL = iconURL;
+    }
+
+    public boolean isOpenNow() {
+        return openNow;
+    }
+
+    public void setOpenNow(boolean openNow) {
+        this.openNow = openNow;
     }
 }

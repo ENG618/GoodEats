@@ -20,7 +20,6 @@ import com.garciaericn.goodeats.login.LoginFragment;
 import com.garciaericn.goodeats.search.SearchActivity;
 import com.garciaericn.goodeats.settings.SettingsActivity;
 
-
 public class FavoritesActivity extends Activity implements ActionBar.TabListener {
 
     private static final int ADD_REQUEST = 112342;
@@ -152,7 +151,7 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
         @Override
         public Fragment getItem(int position) {
             // Return fragment for tab selected
-            switch (position){
+            switch (position) {
                 case 0:
                     return FavoritesListFragment.getInstance();
                 case 1:
