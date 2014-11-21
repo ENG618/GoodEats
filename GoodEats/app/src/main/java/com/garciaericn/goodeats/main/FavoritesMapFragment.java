@@ -12,11 +12,17 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.garciaericn.goodeats.data.DataManager;
+import com.garciaericn.goodeats.data.MarkerAdapter;
+import com.garciaericn.goodeats.data.Restaurant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 /**
  * Full Sail University
@@ -28,7 +34,7 @@ public class FavoritesMapFragment extends MapFragment
         GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,
-        LocationListener{
+        LocationListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final int REQUEST_ENABLE_GPS = 0x52446;
@@ -36,9 +42,15 @@ public class FavoritesMapFragment extends MapFragment
     private GoogleMap mGoogleMap;
     private LocationManager mLocationManager;
     private Location mLocation;
+    private DataManager dataManager;
+
+    // Temporary Arraylist
+    ArrayList<Restaurant> restaurantArrayList;
 
     public FavoritesMapFragment() {
-
+        if (restaurantArrayList == null) {
+            restaurantArrayList = new ArrayList<Restaurant>();
+        }
     }
 
     public static FavoritesMapFragment newInstance(int sectionNumber) {
@@ -60,21 +72,35 @@ public class FavoritesMapFragment extends MapFragment
             mGoogleMap = getMap();
 
 
-            // TODO: Create custom marker adapter, and set to this
+            // Set custom marker adapter to this
+            mGoogleMap.setInfoWindowAdapter(new MarkerAdapter(getActivity()));
             // Set listeners
             mGoogleMap.setOnInfoWindowClickListener(this);
             mGoogleMap.setOnMapClickListener(this);
             mGoogleMap.setOnMapLongClickListener(this);
+            // Enable my location
             mGoogleMap.setMyLocationEnabled(true);
 
             mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             enableGps();
 
-//            location = mGoogleMap.getMyLocation();
             if (mLocation != null) {
                 LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-                mGoogleMap.setMyLocationEnabled(true);
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            }
+
+            // Load saved restaurants
+            if (restaurantArrayList.isEmpty()) {
+                dataManager = DataManager.getInstance(getActivity());
+                if (dataManager.checkFile(getActivity())) {
+                    restaurantArrayList = dataManager.readFromDisk();
+                }
+            }
+
+            if (restaurantArrayList.size() > 0) {
+                for (Restaurant restaurant : restaurantArrayList) {
+                    mGoogleMap.addMarker(new MarkerOptions().position(restaurant.getmLatLng()).title(restaurant.getName()));
+                }
             }
         }
 
@@ -102,7 +128,7 @@ public class FavoritesMapFragment extends MapFragment
 
     private void enableGps() {
         Log.i(LOG_TAG, "enableGps");
-        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
 
             Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -132,7 +158,7 @@ public class FavoritesMapFragment extends MapFragment
 
     /**
      * Click listeners
-     * */
+     */
 
     @Override
     public void onInfoWindowClick(Marker marker) {
@@ -151,7 +177,7 @@ public class FavoritesMapFragment extends MapFragment
 
     /**
      * Location Listener
-     * */
+     */
 
     @Override
     public void onLocationChanged(Location location) {

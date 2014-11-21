@@ -1,5 +1,6 @@
 package com.garciaericn.goodeats.main;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -8,21 +9,29 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
+import com.garciaericn.goodeats.data.DataManager;
+import com.garciaericn.goodeats.data.Restaurant;
 import com.garciaericn.goodeats.login.LoginFragment;
 import com.garciaericn.goodeats.search.SearchActivity;
 import com.garciaericn.goodeats.settings.SettingsActivity;
+import com.garciaericn.goodeats.settings.SettingsFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class FavoritesActivity extends Activity implements ActionBar.TabListener {
 
     private static final int ADD_REQUEST = 112342;
+    private static final String TAG = "com.garciaericn.goodeats.main.FavoritesActivity.TAG";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -38,7 +47,12 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
      */
     ViewPager mViewPager;
 
+    private ArrayList<Restaurant> restaurantArrayList;
+    private DataManager mgr;
+    private SharedPreferences settings;
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
@@ -77,13 +91,35 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
                             .setTabListener(this));
         }
 
-//        DataManager mgr = DataManager.getInstance(this);
-//        if (mgr != null) {
-//            if (!mgr.checkFile(this)) {
-//                loadDefaultData();
-//                mgr.writeToDisk();
-//            }
-//        }
+        mgr = DataManager.getInstance(this);
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (settings.getBoolean(SettingsFragment.FIRST_LAUNCH, true) && mgr != null) {
+            loadDefaultData();
+            mgr.writeToDisk(restaurantArrayList);
+        } else {
+            if (mgr.checkFile(this)) {
+                restaurantArrayList = mgr.readFromDisk();
+//                Log.i(TAG, restaurantArrayList.toString());
+            }
+        }
+    }
+
+    private void loadDefaultData() {
+        if (restaurantArrayList == null) {
+            restaurantArrayList = new ArrayList<Restaurant>();
+        }
+
+        restaurantArrayList.add(new Restaurant("STRING_ID", "Outback Steakhouse", "ICON_URL", new LatLng(28.647407, -81.266505)));
+        restaurantArrayList.add(new Restaurant("STRING_ID", "Olive Garden", "ICON_URL", new LatLng(28.661457, -81.394852)));
+        restaurantArrayList.add(new Restaurant("STRING_ID", "Flemings", "ICON_URL", new LatLng(28.605882, -81.365522)));
+        restaurantArrayList.add(new Restaurant("STRING_ID", "Cate TuTu Tango", "ICON_URL", new LatLng(28.440639, -81.469897)));
+        restaurantArrayList.add(new Restaurant("STRING_ID", "Longhorn", "ICON_URL", new LatLng(28.665178, -81.389495)));
+
+        // Update settings
+        settings.edit()
+                .putBoolean(SettingsFragment.FIRST_LAUNCH, false)
+                .apply();
     }
 
 

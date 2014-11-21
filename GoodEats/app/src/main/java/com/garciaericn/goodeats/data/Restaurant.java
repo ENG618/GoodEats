@@ -1,5 +1,7 @@
 package com.garciaericn.goodeats.data;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 /**
@@ -18,14 +20,30 @@ public class Restaurant implements Serializable {
     private String name;
     private String iconURL;
     private boolean openNow;
+    private LatLng mLatLng;
 
     public Restaurant(){
 
     }
 
+    public Restaurant(String id, String name, String iconURL) {
+        setPlaceID(id);
+        setName(name);
+        setIconURL(iconURL);
+    }
+
+    public Restaurant(String id, String name, String iconURL, LatLng latLng) {
+        setPlaceID(id);
+        setName(name);
+        setIconURL(iconURL);
+        setmLatLng(latLng);
+    }
+
     public Restaurant(String id, String name, String iconURL, boolean openNow) {
         setPlaceID(id);
         setName(name);
+        setIconURL(iconURL);
+        setOpenNow(openNow);
     }
 
     /**
@@ -62,5 +80,13 @@ public class Restaurant implements Serializable {
 
     public void setOpenNow(boolean openNow) {
         this.openNow = openNow;
+    }
+
+    public LatLng getmLatLng() {
+        return mLatLng;
+    }
+
+    public void setmLatLng(LatLng mLatLng) {
+        this.mLatLng = mLatLng;
     }
 }

@@ -19,6 +19,7 @@ import com.garciaericn.goodeats.data.RestaurantListAdapter;
 import com.garciaericn.goodeats.data.db.RestaurantsDataSource;
 import com.garciaericn.goodeats.details.DetailsActivity;
 import com.garciaericn.goodeats.settings.SettingsFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -53,17 +54,17 @@ public class FavoritesListFragment extends ListFragment {
         // Un-bundle arguments from fragment using getArguments()
 
         mgr = DataManager.getInstance(getActivity());
-        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        if (settings.getBoolean(SettingsFragment.FIRST_LAUNCH, true) && mgr != null) {
-            loadDefaultData();
-            mgr.writeToDisk(restaurants);
-        } else {
+//        if (settings.getBoolean(SettingsFragment.FIRST_LAUNCH, true) && mgr != null) {
+//            loadDefaultData();
+//            mgr.writeToDisk(restaurants);
+//        } else {
             if (mgr.checkFile(getActivity())) {
                 restaurants = mgr.readFromDisk();
-                Log.i(TAG, restaurants.toString());
+//                Log.i(TAG, restaurants.toString());
             }
-        }
+//        }
 
         // TODO: set up database
         //dataSource = new RestaurantsDataSource(getActivity());
@@ -113,11 +114,11 @@ public class FavoritesListFragment extends ListFragment {
             restaurants = new ArrayList<Restaurant>();
         }
 
-        restaurants.add(new Restaurant("Outback Steakhouse"));
-        restaurants.add(new Restaurant("Olive Garden"));
-        restaurants.add(new Restaurant("Flemings"));
-        restaurants.add(new Restaurant("Cate TuTu Tango"));
-        restaurants.add(new Restaurant("Longhorn"));
+        restaurants.add(new Restaurant("STRING_ID", "Outback Steakhouse", "ICON_URL", new LatLng(28.647407, -81.266505)));
+        restaurants.add(new Restaurant("STRING_ID", "Olive Garden", "ICON_URL", new LatLng(28.661457, -81.394852)));
+        restaurants.add(new Restaurant("STRING_ID", "Flemings", "ICON_URL", new LatLng(28.605882, -81.365522)));
+        restaurants.add(new Restaurant("STRING_ID", "Cate TuTu Tango", "ICON_URL", new LatLng(28.440639, -81.469897)));
+        restaurants.add(new Restaurant("STRING_ID", "Longhorn", "ICON_URL", new LatLng(28.665178, -81.389495)));
 
         // Update settings
         settings.edit()
