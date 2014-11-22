@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
+import com.garciaericn.goodeats.helpers.CheckConnection;
 import com.garciaericn.goodeats.main.FavoritesActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
@@ -178,6 +179,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
             }
 
         }
+
+        CheckConnection checkConnection = new CheckConnection(getActivity());
+        checkConnection.isConnected();
     }
 
     public void resolveSignInError() {
