@@ -94,10 +94,12 @@ public class FavoritesMapFragment extends MapFragment
                 dataManager = DataManager.getInstance(getActivity());
                 if (dataManager.checkFile(getActivity())) {
                     restaurantArrayList = dataManager.readFromDisk();
+                } else {
+
                 }
             }
 
-            if (restaurantArrayList.size() > 0) {
+            if (restaurantArrayList != null && restaurantArrayList.size() > 0) {
                 for (Restaurant restaurant : restaurantArrayList) {
                     mGoogleMap.addMarker(new MarkerOptions().position(restaurant.getmLatLng()).title(restaurant.getName()));
                 }

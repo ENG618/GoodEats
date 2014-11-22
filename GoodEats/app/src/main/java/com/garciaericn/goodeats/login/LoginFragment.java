@@ -45,9 +45,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     private ConnectionResult mConnectionResult;
     private boolean mSignInClicked;
     private boolean mSignedIn;
+    private CheckConnection checkConnection;
 
     public LoginFragment() {
-
     }
 
     public static LoginFragment getInstance() {
@@ -68,6 +68,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        checkConnection = new CheckConnection(getActivity());
         setHasOptionsMenu(true);
 
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -92,7 +93,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     @Override
     public void onStart() {
         super.onStart();
-            mGoogleApiClient.connect();
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -120,6 +121,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
     @Override
     public void onClick(View v) {
+        checkConnection.isConnected();
         switch (v.getId()) {
             case R.id.g_plus_login:
                 if (!mGoogleApiClient.isConnected()) {
@@ -142,18 +144,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
         String accountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
         Toast.makeText(getActivity(), accountName, Toast.LENGTH_SHORT).show();
-//        String accountID = GoogleAuthUtil.getAccountId(getActivity(), accountName);
-//        try {
-//            accountID = GoogleAuthUtil.getAccountId(getActivity().getApplicationContext(),accountName);
-//        } catch (GoogleAuthException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        //        String accountID = GoogleAuthUtil.getAccountId(getActivity(), accountName);
+        //        try {
+        //            accountID = GoogleAuthUtil.getAccountId(getActivity().getApplicationContext(),accountName);
+        //        } catch (GoogleAuthException e) {
+        //            e.printStackTrace();
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
 
-//        if (accountID != null) {
-//            // TODO: createLocalAccount() = Store account name and id with DB of restaurants
-//        }
+        //        if (accountID != null) {
+        //            // TODO: createLocalAccount() = Store account name and id with DB of restaurants
+        //        }
 
 
         // Launch main activity
@@ -179,9 +181,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
             }
 
         }
-
-        CheckConnection checkConnection = new CheckConnection(getActivity());
         checkConnection.isConnected();
+        //        if (!checkConnection.isConnected()) {
+        //            Toast.makeText(getActivity(), "No network connection", Toast.LENGTH_SHORT).show();
+        //        }
+
     }
 
     public void resolveSignInError() {

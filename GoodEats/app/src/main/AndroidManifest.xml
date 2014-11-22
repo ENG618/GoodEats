@@ -42,7 +42,6 @@
 
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDnT7xc8sTv_f-2dSjoNF83an8cxOB5xb4"/>
 

@@ -34,23 +34,45 @@ public class CheckConnection {
             // Display dialog for user to connect, with intent to wifi settings
             showConnectionFailedDialog();
         }
-
         // Return false by default
         return false;
     }
 
     private void showConnectionFailedDialog() {
-        // TODO: Display dialog for user to connect, with intent to wifi settings
-        new AlertDialog.Builder(mContext)
+        // Display dialog for user to connect, with intent to wifi settings
+        AlertDialog.Builder alertDialogBuilder =  new AlertDialog.Builder(mContext)
                 .setTitle("No Network Connection")
-                .setMessage("Please enable wifi data from.")
-                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent settingsIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                        mContext.startActivity(settingsIntent);
-                    }
-                })
-                .show();
+                .setMessage("Please enable wifi data from.");
+
+        // Add positive wifi settings button
+        alertDialogBuilder.setPositiveButton("Wifi Settings", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent mobileSettingsIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                mContext.startActivity(mobileSettingsIntent);
+                dialog.dismiss();
+            }
+        });
+
+        // Add neutral mobile network button
+        alertDialogBuilder.setNeutralButton("Mobile Network", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent mobileSettingsIntent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                mContext.startActivity(mobileSettingsIntent);
+                dialog.dismiss();
+            }
+        });
+
+//        // Add negative cancel button
+//        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
