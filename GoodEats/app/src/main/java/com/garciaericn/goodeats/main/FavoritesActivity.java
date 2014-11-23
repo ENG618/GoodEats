@@ -14,7 +14,6 @@ import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -31,7 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class FavoritesActivity extends Activity implements ActionBar.TabListener {
 
     private static final int ADD_REQUEST = 112342;
-    private static final String TAG = "com.garciaericn.goodeats.main.FavoritesActivity.TAG";
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -56,6 +55,19 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
+
+        mgr = DataManager.getInstance(this);
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (settings.getBoolean(SettingsFragment.FIRST_LAUNCH, true) && mgr != null) {
+            loadDefaultData();
+            mgr.writeToDisk(restaurantArrayList);
+        } else {
+            if (mgr.checkFile(this)) {
+                restaurantArrayList = mgr.readFromDisk();
+//                Log.i(TAG, restaurantArrayList.toString());
+            }
+        }
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -91,18 +103,6 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
                             .setTabListener(this));
         }
 
-        mgr = DataManager.getInstance(this);
-        settings = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (settings.getBoolean(SettingsFragment.FIRST_LAUNCH, true) && mgr != null) {
-            loadDefaultData();
-            mgr.writeToDisk(restaurantArrayList);
-        } else {
-            if (mgr.checkFile(this)) {
-                restaurantArrayList = mgr.readFromDisk();
-//                Log.i(TAG, restaurantArrayList.toString());
-            }
-        }
     }
 
     private void loadDefaultData() {

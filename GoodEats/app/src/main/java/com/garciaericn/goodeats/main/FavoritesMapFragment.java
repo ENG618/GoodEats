@@ -44,7 +44,7 @@ public class FavoritesMapFragment extends MapFragment
     private Location mLocation;
     private DataManager dataManager;
 
-    // Temporary Arraylist
+    // Temporary ArrayList
     ArrayList<Restaurant> restaurantArrayList;
 
     public FavoritesMapFragment() {
@@ -86,7 +86,7 @@ public class FavoritesMapFragment extends MapFragment
 
             if (mLocation != null) {
                 LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
             }
 
             // Load saved restaurants
@@ -94,14 +94,12 @@ public class FavoritesMapFragment extends MapFragment
                 dataManager = DataManager.getInstance(getActivity());
                 if (dataManager.checkFile(getActivity())) {
                     restaurantArrayList = dataManager.readFromDisk();
-                } else {
-
                 }
             }
 
             if (restaurantArrayList != null && restaurantArrayList.size() > 0) {
                 for (Restaurant restaurant : restaurantArrayList) {
-                    mGoogleMap.addMarker(new MarkerOptions().position(restaurant.getmLatLng()).title(restaurant.getName()));
+                    mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(restaurant.getLat(), restaurant.getLng())).title(restaurant.getName()));
                 }
             }
         }

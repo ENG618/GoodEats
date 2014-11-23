@@ -25,7 +25,7 @@ import com.google.android.gms.plus.Plus;
  * Mobile Development BS
  * Created by ENG618-Mac on 11/10/14.
  */
-public class LoginFragment extends Fragment implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class LoginFragment extends Fragment implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "com.garciaericn.goodeats.login.LoginFragment.TAG";
 
@@ -55,7 +55,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     }
 
     private void signOut() {
-        if (mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
@@ -219,6 +219,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
                 signOut();
             }
         }
-
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

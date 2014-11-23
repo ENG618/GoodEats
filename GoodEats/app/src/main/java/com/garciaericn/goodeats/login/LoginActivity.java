@@ -1,6 +1,7 @@
 package com.garciaericn.goodeats.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.garciaericn.goodeats.R;
@@ -26,5 +27,10 @@ public class LoginActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.login_container, LoginFragment.getInstance(), LoginFragment.TAG)
                 .commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -13,14 +13,16 @@ public class Restaurant implements Serializable {
     public static final long serialVersionUID = 2357817694738294783L;
 
     public static final String RESTAURANT = "RESTAURANT";
-    public static final int SAVE_CODE = 12345;
+//    public static final int SAVE_CODE = 12345;
 
     // Object fields
     private String placeID;
     private String name;
     private String iconURL;
     private boolean openNow;
-    private LatLng mLatLng;
+    private double lat;
+    private double lng;
+//    private LatLng mLatLng;
 
     public Restaurant(){
 
@@ -36,7 +38,8 @@ public class Restaurant implements Serializable {
         setPlaceID(id);
         setName(name);
         setIconURL(iconURL);
-        setmLatLng(latLng);
+        setLat(latLng.latitude);
+        setLng(latLng.longitude);
     }
 
     public Restaurant(String id, String name, String iconURL, boolean openNow) {
@@ -82,11 +85,19 @@ public class Restaurant implements Serializable {
         this.openNow = openNow;
     }
 
-    public LatLng getmLatLng() {
-        return mLatLng;
+    public double getLat() {
+        return lat;
     }
 
-    public void setmLatLng(LatLng mLatLng) {
-        this.mLatLng = mLatLng;
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }
