@@ -45,11 +45,11 @@ public class DataManager implements GoogleApiClient.ConnectionCallbacks, GoogleA
     }
 
     private DataManager() {
-        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
-                .addApi(Drive.API)
-                .addScope(Drive.SCOPE_FILE)
-                .addConnectionCallbacks(this)
-                .build();
+//        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+//                .addApi(Drive.API)
+//                .addScope(Drive.SCOPE_FILE)
+//                .addConnectionCallbacks(this)
+//                .build();
     }
 
     public void startGoogleApiClient(){

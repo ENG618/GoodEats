@@ -64,14 +64,7 @@ public class CheckConnection {
             }
         });
 
-//        // Add negative cancel button
-//        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-
+        // Build and show dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }

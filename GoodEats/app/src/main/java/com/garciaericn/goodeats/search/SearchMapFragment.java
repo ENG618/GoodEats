@@ -35,6 +35,10 @@ public class SearchMapFragment extends MapFragment implements LocationListener{
     private LatLng mCurrentLocation;
     private String placesSearchURL;
 
+    public interface SearchFragmentCallbacks {
+        public void searchPlaces(String searchUrlString);
+    }
+
     public SearchMapFragment() {
 
     }
@@ -133,8 +137,14 @@ public class SearchMapFragment extends MapFragment implements LocationListener{
 
 
 
+
+
+
+
+
+
     // Fetch URL
-    private static String getResponse(URL url) {
+    /*private static String getResponse(URL url) {
         // Log message
         Log.i(TAG, "getResponse entered");
 
@@ -163,10 +173,10 @@ public class SearchMapFragment extends MapFragment implements LocationListener{
         }
 
         return response;
-    }
+    }*/
 
     // Obtain data from api
-    private class getData extends AsyncTask<String, Void, String> {
+    /*private class getData extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -188,10 +198,10 @@ public class SearchMapFragment extends MapFragment implements LocationListener{
             Log.i(TAG, "onPostExecute entered");
             Log.i(TAG, "Post Execute String: " + s);
 
-            // TODO: Parse and send to fragments
+            // Parse and send to fragments
 
             super.onPostExecute(s);
         }
-    }
+    }*/
 
 }
