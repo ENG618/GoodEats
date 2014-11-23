@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/search_map_container">
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/search_map_container"
+        android:background="@android:color/darker_gray" />
+
+    <AutoCompleteTextView android:id="@+id/auto_complete_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="20dp"
+        android:padding="@dimen/window_margin"
+        android:layout_marginTop="@dimen/window_margin"
+        android:layout_marginStart="@dimen/window_margin"
+        android:layout_marginLeft="@dimen/window_margin"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:background="@android:color/white" />
 
 </FrameLayout>
