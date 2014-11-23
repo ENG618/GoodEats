@@ -1,7 +1,9 @@
-package com.garciaericn.goodeats.data;
+package com.garciaericn.goodeats.helpers;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.garciaericn.goodeats.data.Restaurant;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
  * Created by ENG618-Mac on 10/16/14.
  */
 public class DataManager {
-    private static final String TAG = "com.garciaericn.goodeats.data.DataManager.TAG";
+    private static final String TAG = "com.garciaericn.goodeats.helpers.DataManager.TAG";
     private static final String FILENAME = "Favorite Restaurants";
     private static DataManager mgr = new DataManager();
     private static Context mContext;

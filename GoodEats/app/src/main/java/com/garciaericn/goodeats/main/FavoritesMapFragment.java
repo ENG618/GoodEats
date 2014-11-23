@@ -12,7 +12,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.garciaericn.goodeats.data.DataManager;
+import com.garciaericn.goodeats.helpers.DataManager;
 import com.garciaericn.goodeats.data.MarkerAdapter;
 import com.garciaericn.goodeats.data.Restaurant;
 import com.google.android.gms.maps.CameraUpdateFactory;

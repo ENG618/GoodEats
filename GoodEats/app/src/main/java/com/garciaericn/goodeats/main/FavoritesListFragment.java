@@ -6,14 +6,12 @@ import android.app.ListFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
-import com.garciaericn.goodeats.data.DataManager;
+import com.garciaericn.goodeats.helpers.DataManager;
 import com.garciaericn.goodeats.data.Restaurant;
 import com.garciaericn.goodeats.data.RestaurantListAdapter;
 import com.garciaericn.goodeats.data.db.RestaurantsDataSource;

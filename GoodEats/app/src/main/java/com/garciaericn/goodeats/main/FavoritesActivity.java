@@ -19,7 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
-import com.garciaericn.goodeats.data.DataManager;
+import com.garciaericn.goodeats.helpers.DataManager;
 import com.garciaericn.goodeats.data.Restaurant;
 import com.garciaericn.goodeats.login.LoginFragment;
 import com.garciaericn.goodeats.search.SearchActivity;
