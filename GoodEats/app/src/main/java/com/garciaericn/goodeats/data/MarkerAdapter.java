@@ -36,12 +36,6 @@ public class MarkerAdapter implements GoogleMap.InfoWindowAdapter {
 
     @Override
     public View getInfoWindow(Marker marker) {
-        mTextView.setText(marker.getTitle());
-        return mTextView;
-    }
-
-    @Override
-    public View getInfoContents(Marker marker) {
         View view = View.inflate(mContext, R.layout.marker_window, null);
 
         if (marker.getSnippet() != null) {
@@ -52,8 +46,12 @@ public class MarkerAdapter implements GoogleMap.InfoWindowAdapter {
         TextView titleTV = (TextView) view.findViewById(R.id.window_title);
         titleTV.setText(marker.getTitle());
 
+        return view;
+    }
 
-
-        return null;
+    @Override
+    public View getInfoContents(Marker marker) {
+        mTextView.setText(marker.getTitle());
+        return mTextView;
     }
 }

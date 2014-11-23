@@ -18,6 +18,7 @@ import com.garciaericn.goodeats.data.Restaurant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -72,38 +73,43 @@ public class FavoritesMapFragment extends MapFragment
             mGoogleMap = getMap();
 
 
-            // Set custom marker adapter to this
-            mGoogleMap.setInfoWindowAdapter(new MarkerAdapter(getActivity()));
-            // Set listeners
-            mGoogleMap.setOnInfoWindowClickListener(this);
-            mGoogleMap.setOnMapClickListener(this);
-            mGoogleMap.setOnMapLongClickListener(this);
-            // Enable my location
-            mGoogleMap.setMyLocationEnabled(true);
+            if (mGoogleMap != null) {
+                // Set custom marker adapter to this
+                mGoogleMap.setInfoWindowAdapter(new MarkerAdapter(getActivity()));
+                // Set listeners
+                mGoogleMap.setOnInfoWindowClickListener(this);
+                mGoogleMap.setOnMapClickListener(this);
+                mGoogleMap.setOnMapLongClickListener(this);
+                // Enable my location
+                mGoogleMap.setMyLocationEnabled(true);
 
-            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            enableGps();
+                mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                enableGps();
 
-            if (mLocation != null) {
-                LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
-            }
-
-            // Load saved restaurants
-            if (restaurantArrayList.isEmpty()) {
-                dataManager = DataManager.getInstance(getActivity());
-                if (dataManager.checkFile(getActivity())) {
-                    restaurantArrayList = dataManager.readFromDisk();
+                if (mLocation != null) {
+                    LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
                 }
-            }
 
-            if (restaurantArrayList != null && restaurantArrayList.size() > 0) {
-                for (Restaurant restaurant : restaurantArrayList) {
-                    mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(restaurant.getLat(), restaurant.getLng())).title(restaurant.getName()));
+                // Load saved restaurants
+                if (restaurantArrayList.isEmpty()) {
+                    dataManager = DataManager.getInstance(getActivity());
+                    if (dataManager.checkFile(getActivity())) {
+                        restaurantArrayList = dataManager.readFromDisk();
+                    }
+                }
+
+                if (restaurantArrayList != null && restaurantArrayList.size() > 0) {
+                    for (Restaurant restaurant : restaurantArrayList) {
+                        mGoogleMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(restaurant.getLat(), restaurant.getLng()))
+                                .title(restaurant.getName())
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                    }
+                    mGoogleMap.setInfoWindowAdapter(new MarkerAdapter(getActivity()));
                 }
             }
         }
-
     }
 
     @Override
