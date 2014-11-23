@@ -57,6 +57,7 @@ public class FavoritesActivity extends Activity implements ActionBar.TabListener
         setContentView(R.layout.activity_favorites);
 
         mgr = DataManager.getInstance(this);
+        mgr.startGoogleApiClient();
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (settings.getBoolean(SettingsFragment.FIRST_LAUNCH, true) && mgr != null) {

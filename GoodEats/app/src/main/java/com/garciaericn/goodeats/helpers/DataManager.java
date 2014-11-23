@@ -1,9 +1,16 @@
 package com.garciaericn.goodeats.helpers;
 
 import android.content.Context;
+import android.content.IntentSender;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.garciaericn.goodeats.data.Restaurant;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,12 +28,13 @@ import java.util.ArrayList;
  * Mobile Development BS
  * Created by ENG618-Mac on 10/16/14.
  */
-public class DataManager {
+public class DataManager implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private static final String TAG = "com.garciaericn.goodeats.helpers.DataManager.TAG";
     private static final String FILENAME = "Favorite Restaurants";
     private static DataManager mgr = new DataManager();
     private static Context mContext;
     private ArrayList<Restaurant> restaurants;
+    private GoogleApiClient mGoogleApiClient;
 
     public static DataManager getInstance(Context context) {
         mContext = context;
@@ -37,6 +45,15 @@ public class DataManager {
     }
 
     private DataManager() {
+        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+                .addApi(Drive.API)
+                .addScope(Drive.SCOPE_FILE)
+                .addConnectionCallbacks(this)
+                .build();
+    }
+
+    public void startGoogleApiClient(){
+        mGoogleApiClient.connect();
     }
 
     public Boolean checkFile(Context context) {
@@ -91,5 +108,34 @@ public class DataManager {
             }
         }
         return restaurants;
+    }
+
+    /**
+     * GoogleApiConnection Callback Methods
+     * */
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Toast.makeText(mContext, "ConnectionsFailed: " + connectionResult.toString(), Toast.LENGTH_SHORT).show();
+//        if (connectionResult.hasResolution()) {
+//            try {
+//                connectionResult.startResolutionForResult(mContext, );
+//                connectionResult.startResolutionForResult(mContext, RESOLVE_CONNECTION_REQUEST_CODE);
+//            } catch (IntentSender.SendIntentException e) {
+//                // Unable to resolve, message user appropriately
+//            }
+//        } else {
+//            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+//        }
     }
 }
