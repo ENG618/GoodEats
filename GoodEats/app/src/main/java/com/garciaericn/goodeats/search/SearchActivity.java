@@ -1,10 +1,16 @@
 package com.garciaericn.goodeats.search;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +21,7 @@ import android.widget.Filterable;
 import android.widget.Toast;
 
 import com.garciaericn.goodeats.R;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,44 +42,100 @@ import java.util.ArrayList;
  * Mobile Development BS
  * Created by ENG618-Mac on 11/7/14.
  */
-public class SearchActivity extends Activity implements SearchMapFragment.SearchFragmentCallbacks, AdapterView.OnItemClickListener{
+public class SearchActivity extends Activity implements
+        SearchMapFragment.SearchFragmentCallbacks,
+        AdapterView.OnItemClickListener,
+        LocationListener{
 
+    // Constants
     private static final String TAG = "com.garciaericn.goodeats.search.SearchActivity.TAG";
+    private static final int RC_ENABLE_GPS = 5553245;
+    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
+    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
+    private static final String OUT_JSON = "/json";
+    private static final String API_KEY = "AIzaSyCnTiA61PWedSWuinMpWgeeTrSBiaWHg9I";
+    private static final int DISTANCE_IN_METERS = 20;
+
+    // Privet fields
     private String placesSearchURL;
+    private LocationManager mLocationManager;
+    private LatLng mCurrentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
         AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.auto_complete_tv);
         autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
 
-
-
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.search_map_container, SearchMapFragment.getInstance(), SearchMapFragment.TAG)
-                .commit();
+//        getFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.search_map_container, SearchMapFragment.getInstance(), SearchMapFragment.TAG)
+//                .commit();
 
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        enableGPS();
+    }
+
+    private String getPlacesSearchURL(String searchTerm) {
+        String currentLocationString = null;
+        if (mCurrentLocation != null) {
+            currentLocationString = mCurrentLocation.toString();
+        }
+
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(PLACES_API_BASE);
+        sb.append("search/" + OUT_JSON);
+        sb.append("?location=" + currentLocationString);
+        sb.append("&radius=" + DISTANCE_IN_METERS);
+        sb.append("&key=" + API_KEY);
+
+        return sb.toString();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_ENABLE_GPS) {
+            enableGPS();
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void enableGPS() {
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 10, this);
 
+            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            }
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Search works best with GPS")
+                    .setMessage("Please enable GPS in system settings")
+                    .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(settingsIntent, RC_ENABLE_GPS);
+                        }
+                    })
+                    .show();
+        }
+    }
 
-    private static final String LOG_TAG = "ExampleApp";
-
-    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    private static final String OUT_JSON = "/json";
-
-    private static final String API_KEY = "YOUR_API_KEY";
-
+    /**
+     * Auto Complete methods
+     * */
     private ArrayList<String> autocomplete(String input) {
         ArrayList<String> resultList = null;
 
@@ -95,10 +158,10 @@ public class SearchActivity extends Activity implements SearchMapFragment.Search
                 jsonResults.append(buff, 0, read);
             }
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Error processing Places API URL", e);
+            Log.e(TAG, "Error processing Places API URL", e);
             return resultList;
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error connecting to Places API", e);
+            Log.e(TAG, "Error connecting to Places API", e);
             return resultList;
         } finally {
             if (conn != null) {
@@ -117,7 +180,7 @@ public class SearchActivity extends Activity implements SearchMapFragment.Search
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "Cannot process JSON results", e);
+            Log.e(TAG, "Cannot process JSON results", e);
         }
 
         return resultList;
@@ -128,7 +191,6 @@ public class SearchActivity extends Activity implements SearchMapFragment.Search
         String str = (String) parent.getItemAtPosition(position);
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
-
 
     private class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
         private ArrayList<String> resultList;
@@ -177,19 +239,33 @@ public class SearchActivity extends Activity implements SearchMapFragment.Search
         }
     }
 
+    /**
+     * Location Listener
+     * */
 
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+    }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
+    }
 
+    @Override
+    public void onProviderEnabled(String provider) {
 
+    }
 
+    @Override
+    public void onProviderDisabled(String provider) {
 
+    }
 
-
-
-
-
-
+    /**
+     * Async task methods
+     * */
 
     // Fetch URL
     private static String getResponse(URL url) {
@@ -223,12 +299,6 @@ public class SearchActivity extends Activity implements SearchMapFragment.Search
         return response;
     }
 
-    @Override
-    public void searchPlaces(String searchUrlString) {
-        placesSearchURL = searchUrlString;
-        new getData();
-    }
-
     // Obtain data from api
     private class getData extends AsyncTask<String, Void, String> {
 
@@ -257,4 +327,14 @@ public class SearchActivity extends Activity implements SearchMapFragment.Search
             super.onPostExecute(s);
         }
     }
-}
+
+    /**
+     * Interface methods
+     * */
+
+    @Override
+    public void searchPlaces(String searchUrlString) {
+        placesSearchURL = searchUrlString;
+        new getData();
+    }
+ }
